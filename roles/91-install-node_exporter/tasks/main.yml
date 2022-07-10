@@ -7,7 +7,7 @@
   - name: extract archive
     unarchive:
       src: "node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
-      dest: {{node_exporter_home}}
+      dest: "{{node_exporter_home}}"
 
   - name: move node exporter to /usr/local/bin
     copy:
