@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/zx-spectrum1983/rusbitech.git & GIT_PID=$!
     wait $GIT_PID
     cd rusbitech
+    ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=90-install-docker facts=false"
   SHELL
 
 end
