@@ -1,0 +1,35 @@
+---
+
+  - name: Start role
+    debug:
+      msg: "########### INSTALL NODE_EXPORTER ###########"
+
+  - name: extract archive
+    unarchive:
+      src: "node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+      dest: {{node_exporter_home}}
+
+  - name: move node exporter to /usr/local/bin
+    copy:
+      src: "{{node_exporter_home}}/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+      dest: /usr/local/bin/node_exporter
+      remote_src: yes
+      mode: 755  
+
+  - name: install unit file to systemd
+    template:
+      src: node_exporter.service.j2
+      dest: /etc/systemd/system/node_exporter.service
+      mode: 600
+
+  - name: configure systemd to use service
+    systemd:
+      daemon_reload: yes
+      enabled: yes
+      state: started
+      name: node_exporter.service
+
+  - name: Health check
+    uri:
+        url: "http://{{ ansible_host }}:9100/actuator/health"
+        status_code: 200
