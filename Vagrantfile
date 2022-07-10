@@ -10,7 +10,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt update
     apt install git ansible -y
-    git clone https://github.com/zx-spectrum1983/rusbitech.git
+    git clone https://github.com/zx-spectrum1983/rusbitech.git & GIT_PID=$!
+    wait $GIT_PID
     cd rusbitech
   SHELL
 
