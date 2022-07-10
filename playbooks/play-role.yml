@@ -1,0 +1,12 @@
+---
+
+# Выполнить любую роль из коллекции
+# ansible-playbook -l group_from_inventory playbooks/play-role.yml -e "ROLE=xx-name-role facts=false" --check
+
+ - hosts: all
+#   remote_user: ansible
+#   become: yes
+   gather_facts: "{{facts | default('true')}}"
+   roles:
+     - '{{ ROLE }}'
+
