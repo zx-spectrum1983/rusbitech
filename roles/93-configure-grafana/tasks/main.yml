@@ -7,7 +7,12 @@
   - name: Copy dashboard json
     copy:
       src: node-exporter-full_rev27.json
-      dest: node-exporter-full_rev27.json
+      dest: "{{home_dir}}/node-exporter-full_rev27.json"
+
+  - name: Wait for port 3000 is ready
+    wait_for:
+      port: 3000
+      delay: 10
 
   - name: Get API key
     shell: "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"apikeycurl-{{ ansible_date_time.iso8601_basic }}\", \"role\": \"Admin\"}' http://admin:admin@localhost:3000/api/auth/keys"
