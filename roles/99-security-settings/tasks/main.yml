@@ -1,0 +1,16 @@
+---
+
+  - name: Start role
+    debug:
+      msg: "########### CONFIGURE SECURITY SETTINGS ###########"
+
+  - name: Install iptables_raw library
+    block:
+      - name: Make dir for module iptables_raw
+        file:
+          path: .ansible/plugins/modules
+          state: directory
+      - name: Install module iptables_raw
+        get_url:
+          url: https://raw.githubusercontent.com/Nordeus/ansible_iptables_raw/master/iptables_raw.py
+          dest: .ansible/plugins/modules
