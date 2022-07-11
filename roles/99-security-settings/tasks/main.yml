@@ -4,15 +4,23 @@
     debug:
       msg: "########### CONFIGURE SECURITY SETTINGS ###########"
 
-  - name: Install iptables_raw library
-    block:
-      - name: Make dir for module iptables_raw
-        file:
-          path: .ansible/plugins/modules
-          state: directory
-        delegate_to: localhost
-      - name: Install module iptables_raw
-        get_url:
-          url: https://raw.githubusercontent.com/Nordeus/ansible_iptables_raw/master/iptables_raw.py
-          dest: .ansible/plugins/modules
-        delegate_to: localhost
+  - name: Install iptables-persistent
+    apt:
+      pkg:
+        - iptables-persistent
+
+  - iptables_raw:
+      name=allow_localhost_9090
+      rules='-A INPUT -p tcp -s localhost --dport 9090 -j ACCEPT'
+
+  - iptables_raw:
+      name=drop_external_9090
+      rules='-A INPUT -p tcp --dport 9090 -j DROP'
+
+  - iptables_raw:
+      name=allow_localhost_9100
+      rules='-A INPUT -p tcp -s localhost --dport 9100 -j ACCEPT'
+
+  - iptables_raw:
+      name=drop_external_9100
+      rules='-A INPUT -p tcp --dport 9100 -j DROP'

@@ -19,6 +19,7 @@ Vagrant.configure("2") do |config|
     ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=91-install-node_exporter facts=false"
     ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=92-deploy-monitoring facts=false"
     ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=93-configure-grafana facts=true"
+    ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=99-security-settings facts=false"
   SHELL
 
 end
