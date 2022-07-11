@@ -14,7 +14,7 @@
         - runc
       state: absent
 
-  - name: Install requirements
+  - name: Install requirements (waiting)
     apt:
       pkg:
         - apt-transport-https
@@ -23,7 +23,7 @@
         - gnupg2
         - software-properties-common
         - lsb-release
-        - python3-pip
+#        - python3-pip
 
   - name: Check gpg exist
     stat:
@@ -43,7 +43,7 @@
       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
       $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-  - name: Install docker
+  - name: Install docker (waiting)
     apt:
       pkg:
         - docker-ce
