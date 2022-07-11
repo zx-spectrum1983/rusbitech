@@ -10,7 +10,9 @@
         file:
           path: .ansible/plugins/modules
           state: directory
+        delegate_to: localhost
       - name: Install module iptables_raw
         get_url:
           url: https://raw.githubusercontent.com/Nordeus/ansible_iptables_raw/master/iptables_raw.py
           dest: .ansible/plugins/modules
+        delegate_to: localhost
