@@ -49,7 +49,7 @@
         - docker-ce
         - docker-ce-cli
         - containerd.io
-        - docker-compose-plugin
+#        - docker-compose-plugin
       update_cache: yes
 
   - name: Check docker-compose installation
