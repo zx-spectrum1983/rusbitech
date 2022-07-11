@@ -1,0 +1,30 @@
+---
+
+  - name: Start role
+    debug:
+      msg: "########### DEPLOY MONITORING PROJECT ###########"
+
+  - name: Create compose project dir
+    file:
+      path: "{{home_dir}}/astra-compose"
+      state: directory
+
+  - name: Copy docker-compose.yml and prometheus.yml to project
+    template:
+      src: "{{item}}"
+      dest: "{{home_dir}}/astra-compose/{{item}}"
+    loop:
+      - docker-compose.yml
+      - prometheus.yml
+
+  - name: Up project
+    shell: cd {{home_dir}}/astra-compose && docker-compose up -d
+#    docker_compose:
+#      project_src: /home/vagrant/astra-compose
+    register: output
+
+  - debug:
+      var: output.stderr_lines
+
+
+  
