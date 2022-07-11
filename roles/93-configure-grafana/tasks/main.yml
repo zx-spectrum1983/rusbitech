@@ -29,7 +29,7 @@
       var: output.stdout
 
   - name: Import dashboard to grafana
-    shell: "curl -X POST --insecure -H \"Authorization: Bearer {{(apikey.stdout | from_json).key}}\" -H \"Content-Type: application/json\" -d @node-exporter-full_rev27.json http://localhost:3000/api/dashboards/db"
+    shell: "curl -X POST --insecure -H \"Authorization: Bearer {{(apikey.stdout | from_json).key}}\" -H \"Content-Type: application/json\" -d @{{home_dir}}/node-exporter-full_rev27.json http://localhost:3000/api/dashboards/db"
     register: output
 
   - debug:
