@@ -1,0 +1,57 @@
+---
+
+  - name: Start role
+    debug:
+      msg: "########### CONFIGURE GRAFANA ###########"
+
+  - name: Copy dashboard json
+    copy:
+      src: node-exporter-full_rev27.json
+      dest: node-exporter-full_rev27.json
+
+  - name: Get API key
+#    shell: "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"apikeycurl-{{ ansible_date_time.iso8601_basic }}\", \"role\": \"Admin\"}' http://admin:admin@localhost:3000/api/auth/keys"
+    uri:
+      url: http://admin:admin@localhost:3000/api/auth/keys
+      method: POST
+      body: "{\"name\":\"apikeycurl-{{ ansible_date_time.iso8601_basic }}\", \"role\": \"Admin\"}"
+      body_format: json
+      headers:
+        Content-Type: "application/json"
+    register: apikey
+
+  - debug:
+      var: (apikey.stdout | from_json).key
+
+  - name: Add prometheus as datasource
+#    shell: "curl -X POST --insecure -H \"Authorization: Bearer {{(apikey.stdout | from_json).key}}\" -H \"Content-Type: application/json\" -d '{\"name\":\"prometheus\", \"type\":\"prometheus\", \"url\":\"http://localhost:9090\", \"access\":\"proxy\", \"basicAuth\":false}' http://admin:admin@localhost:3000/api/datasources"
+    uri:
+      url: http://admin:admin@localhost:3000/api/datasources
+      method: POST
+      validate_certs: no
+      body: "{\"name\":\"prometheus\", \"type\":\"prometheus\", \"url\":\"http://localhost:9090\", \"access\":\"proxy\", \"basicAuth\":false}"
+      body_format: json
+      headers:
+        Content-Type: "application/json"
+        Authorization: "Bearer {{(apikey.stdout | from_json).key}}"
+    register: output
+
+  - debug:
+      var: output.stdout
+
+  - name: Import dashboard to grafana
+#    shell: "curl -X POST --insecure -H \"Authorization: Bearer {{(apikey.stdout | from_json).key}}\" -H \"Content-Type: application/json\" -d @node-exporter-full_rev27.json http://localhost:3000/api/dashboards/db"
+    uri:
+      url: http://localhost:3000/api/dashboards/db
+      method: POST
+      validate_certs: no
+      body: "{{ lookup('file','roles/93-configure-grafana/files/node-exporter-full_rev27.json') }}"
+      body_format: json
+      headers:
+        Content-Type: "application/json"
+        Authorization: "Bearer {{(apikey.stdout | from_json).key}}"
+    register: output
+
+  - debug:
+      var: output.stdout
+
