@@ -1,0 +1,12 @@
+---
+
+ - hosts: all
+   vars_files:
+     - "../group_vars/all.yml"
+   gather_facts: true
+   roles:
+     - '90-install-docker'
+     - '91-install-node_exporter'
+     - '92-deploy-monitoring'
+     - '93-configure-grafana'
+     - '99-security-settings'
