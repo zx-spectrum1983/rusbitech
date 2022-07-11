@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
     cd rusbitech
     ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=90-install-docker facts=false"
     ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=91-install-node_exporter facts=false"
+    ansible-playbook --connection=local --inventory 127.0.0.1, playbooks/play-role.yml -e "ROLE=92-deploy-monitoring facts=false"
   SHELL
 
 end
